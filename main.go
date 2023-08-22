@@ -10,10 +10,9 @@ import (
 )
 
 func main() {
-	var (
-		circuit = new(circuits.Poseidon)
-		ecID    = ecc.BN254
-	)
+	circuit := new(circuits.SquareCircuit)
+	ecID := ecc.BN254
+
 	// ---------------- COMPILE CIRCUIT -------------------
 	ccs, err := frontend.Compile(ecID.ScalarField(), r1cs.NewBuilder, circuit)
 	if err != nil {
@@ -27,7 +26,8 @@ func main() {
 	}
 
 	// ---------------- DEFINE WITNESS ----------
-	assignment := circuits.NewPoseidonAssignment()
+	assignment := &circuits.SquareCircuit{X1: -5, X2: 2, A1: 1, A2: 3, A3: -10}
+
 	wit, err := frontend.NewWitness(assignment, ecID.ScalarField())
 	if err != nil {
 		panic(errors.Wrap(err, "failed to instantiate new witness"))
